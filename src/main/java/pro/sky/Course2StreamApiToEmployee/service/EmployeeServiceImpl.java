@@ -1,60 +1,66 @@
 package pro.sky.Course2StreamApiToEmployee.service;
 
 import org.springframework.stereotype.Service;
-import pro.sky.Course2StreamApiToEmployee.exception.EmployeeAlreadyAddedException;
-import pro.sky.Course2StreamApiToEmployee.exception.EmployeeNotFoundException;
-import pro.sky.Course2StreamApiToEmployee.exception.EmployeeStorageIsFullException;
 import pro.sky.Course2StreamApiToEmployee.model.Employee;
-import pro.sky.Course2StreamApiToEmployee.model.EmployeeBook;
 
-import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    final private static int MAX_RANGE_EMPLOYEE = 10;
+    private final PreviousEmployeeService previousEmployeeService;
 
-    private final EmployeeBook employeeBook;
-
-    public EmployeeServiceImpl() {
-        this.employeeBook = new EmployeeBook();
+    public EmployeeServiceImpl(PreviousEmployeeService previousEmployeeService) {
+        this.previousEmployeeService = previousEmployeeService;
     }
 
     @Override
     public Employee addEmployee(String firstName, String surName, String lastName, int department, double salary) {
-        String key = firstName.concat(surName).concat(lastName);
-        if (employeeBook.getEmployeesMap().size() >= MAX_RANGE_EMPLOYEE) {
-            throw new EmployeeStorageIsFullException("Превышен лимит количества сотрудников в фирме");
-        } else if (employeeBook.getEmployeesMap().containsKey(key)) {
-            throw new EmployeeAlreadyAddedException("Сотрудник с такими данными уже добавлен");
-        }
-        Employee employee = new Employee(firstName, surName, lastName, department, salary);
-        employeeBook.getEmployeesMap().put(key, employee);
-        return employee;
+        return previousEmployeeService.addEmployee(firstName, surName, lastName, department, salary);
     }
 
     @Override
     public Employee removeEmployee(String firstName, String surName, String lastName) {
-        String key = firstName.concat(surName).concat(lastName);
-        if (!employeeBook.getEmployeesMap().containsKey(key)) {
-            throw new EmployeeNotFoundException("Сотрудник с заданными данными не найден");
-        }
-        employeeBook.getEmployeesMap().remove(key);
-        return employeeBook.getEmployeesMap().get(key);
+        return previousEmployeeService.removeEmployee(firstName, surName, lastName);
     }
 
     @Override
     public Employee findEmployee(String firstName, String surName, String lastName) {
-        String key = firstName.concat(surName).concat(lastName);
-        boolean employeeFound = employeeBook.getEmployeesMap().containsKey(key);
-        if (!employeeFound) {
-            throw new EmployeeNotFoundException("Сотрудник с заданными данными не найден");
-        }
-        return employeeBook.getEmployeesMap().get(key);
+        return previousEmployeeService.findEmployee(firstName, surName, lastName);
     }
 
     @Override
     public Map<String, Employee> printAllEmployees() {
-        return Collections.unmodifiableMap(employeeBook.getEmployeesMap());
+        return previousEmployeeService.printAllEmployees();
+    }
+
+    @Override
+    public Employee maxSalaryEmployeeInDept(int dept) {
+        return printAllEmployees().values().stream()
+                .filter(e -> e.getDepartment() == dept)
+                .max(Comparator.comparingDouble(e -> e.getSalary())).get();
+    }
+
+    @Override
+    public Employee minSalaryEmployeeInDept(int dept) {
+        return printAllEmployees().values().stream()
+                .filter(e -> e.getDepartment() == dept)
+                .min(Comparator.comparingDouble(e -> e.getSalary())).get();
+    }
+
+    @Override
+    public List<Employee> employeesInDepartment(int dept) {
+        return printAllEmployees().values().stream()
+                .filter(e -> e.getDepartment() == dept)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Employee> allEmployeesInDepartments() {
+        return printAllEmployees().values().stream()
+                .sorted(Comparator.comparingInt(e -> e.getDepartment()))
+                .collect(Collectors.toList());
     }
 }

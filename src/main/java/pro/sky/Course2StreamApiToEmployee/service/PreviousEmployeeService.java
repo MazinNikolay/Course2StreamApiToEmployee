@@ -2,10 +2,9 @@ package pro.sky.Course2StreamApiToEmployee.service;
 
 import pro.sky.Course2StreamApiToEmployee.model.Employee;
 
-import java.util.List;
 import java.util.Map;
 
-public interface EmployeeService {
+public interface PreviousEmployeeService {
 
     Employee addEmployee(String firstName, String surName, String lastName, int department, double salary);
 
@@ -14,12 +13,4 @@ public interface EmployeeService {
     Employee findEmployee(String firstName, String surName, String lastName);
 
     Map<String, Employee> printAllEmployees();
-
-    Employee maxSalaryEmployeeInDept(int dept);
-
-    Employee minSalaryEmployeeInDept(int dept);
-
-    List<Employee> employeesInDepartment(int dept);
-
-    List<Employee> allEmployeesInDepartments();
 }

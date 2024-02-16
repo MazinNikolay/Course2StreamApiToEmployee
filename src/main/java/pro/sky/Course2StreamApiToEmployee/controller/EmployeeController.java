@@ -57,4 +57,23 @@ public class EmployeeController {
         }
         return employeeList;
     }
+
+    @GetMapping(path = "/max-salary")
+    public Employee maxSalaryEmployeeInDept(@RequestParam("departmentId") int departmentId) {
+        return employeeService.maxSalaryEmployeeInDept(departmentId);
+    }
+
+    @GetMapping(path = "/min-salary")
+    public Employee minSalaryEmployeeInDept(@RequestParam("departmentId") int departmentId) {
+        return employeeService.minSalaryEmployeeInDept(departmentId);
+    }
+
+    @GetMapping(path = "/departments/all")
+    public List<Employee> allEmployeesInDepartments(@RequestParam(value = "departmentId", required = false) Integer departmentId) {
+        if (departmentId != null) {
+            return employeeService.employeesInDepartment(departmentId);
+        } else {
+            return employeeService.allEmployeesInDepartments();
+        }
+    }
 }

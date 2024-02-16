@@ -1,6 +1,6 @@
 package pro.sky.Course2StreamApiToEmployee.model;
 
-import pro.sky.Course2StreamApiToEmployee.exception.AddedEmloyeeEmptyData;
+import pro.sky.Course2StreamApiToEmployee.exception.AddedEmloyeeEmptyDataException;
 
 import java.util.Objects;
 
@@ -42,19 +42,19 @@ public class Employee {
 
     public void checkEmptyData(String data) {
         if (data.isEmpty() || data.isBlank()) {
-            throw new AddedEmloyeeEmptyData("Не заполнено одно из полей с данными сотрудника");
+            throw new AddedEmloyeeEmptyDataException("Не заполнено одно из полей с данными сотрудника");
         }
     }
 
     public void checkEmptyData(int data) {
         if (data <= 0) {
-            throw new AddedEmloyeeEmptyData("Не заполнено одно из полей с данными сотрудника");
+            throw new AddedEmloyeeEmptyDataException("Не заполнено одно из полей с данными сотрудника");
         }
     }
 
     public void checkEmptyData(double data) {
         if (data <= 0) {
-            throw new AddedEmloyeeEmptyData("Не заполнено одно из полей с данными сотрудника");
+            throw new AddedEmloyeeEmptyDataException("Не заполнено одно из полей с данными сотрудника");
         }
     }
 
