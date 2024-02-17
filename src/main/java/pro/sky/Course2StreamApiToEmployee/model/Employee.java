@@ -1,6 +1,7 @@
 package pro.sky.Course2StreamApiToEmployee.model;
 
 import pro.sky.Course2StreamApiToEmployee.exception.AddedEmloyeeEmptyDataException;
+import pro.sky.Course2StreamApiToEmployee.utilityClasses.CheckEmptyUtilityClass;
 
 import java.util.Objects;
 
@@ -17,44 +18,56 @@ public class Employee {
     public Employee(String firstName, String surName, String lastName, int department, double salary) {
         counter++;
         id = counter;
-        checkEmptyData(firstName);
-        this.firstName = firstName;
-        checkEmptyData(surName);
-        this.surName = surName;
-        checkEmptyData(lastName);
-        this.lastName = lastName;
-        checkEmptyData(department);
-        this.department = department;
-        checkEmptyData(salary);
-        this.salary = salary;
+        if (CheckEmptyUtilityClass.checkEmptyData(firstName)) {
+            throw new AddedEmloyeeEmptyDataException("Не заполнено одно из полей с данными сотрудника");
+        } else {
+            this.firstName = firstName;
+        }
+
+        if (CheckEmptyUtilityClass.checkEmptyData(surName)) {
+            throw new AddedEmloyeeEmptyDataException("Не заполнено одно из полей с данными сотрудника");
+        } else {
+            this.surName = surName;
+        }
+
+        if (CheckEmptyUtilityClass.checkEmptyData(lastName)) {
+            throw new AddedEmloyeeEmptyDataException("Не заполнено одно из полей с данными сотрудника");
+        } else {
+            this.lastName = lastName;
+        }
+
+        if (CheckEmptyUtilityClass.checkEmptyData(department)) {
+            throw new AddedEmloyeeEmptyDataException("Не заполнено одно из полей с данными сотрудника");
+        } else {
+            this.department = department;
+        }
+
+        if (CheckEmptyUtilityClass.checkEmptyData(salary)) {
+            throw new AddedEmloyeeEmptyDataException("Не заполнено одно из полей с данными сотрудника");
+        } else {
+            this.salary = salary;
+        }
     }
 
     public Employee(String firstName, String surName, String lastName) {
         counter++;
         id = counter;
-        checkEmptyData(firstName);
-        this.firstName = firstName;
-        checkEmptyData(surName);
-        this.surName = surName;
-        checkEmptyData(lastName);
-        this.lastName = lastName;
-    }
-
-    public void checkEmptyData(String data) {
-        if (data.isEmpty() || data.isBlank()) {
+        if (CheckEmptyUtilityClass.checkEmptyData(firstName)) {
             throw new AddedEmloyeeEmptyDataException("Не заполнено одно из полей с данными сотрудника");
+        } else {
+            this.firstName = firstName;
         }
-    }
 
-    public void checkEmptyData(int data) {
-        if (data <= 0) {
+        if (CheckEmptyUtilityClass.checkEmptyData(surName)) {
             throw new AddedEmloyeeEmptyDataException("Не заполнено одно из полей с данными сотрудника");
+        } else {
+            this.surName = surName;
         }
-    }
 
-    public void checkEmptyData(double data) {
-        if (data <= 0) {
+        if (CheckEmptyUtilityClass.checkEmptyData(lastName)) {
             throw new AddedEmloyeeEmptyDataException("Не заполнено одно из полей с данными сотрудника");
+        } else {
+            this.lastName = lastName;
         }
     }
 
