@@ -39,6 +39,21 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public void indexSalaryesForDepartment(int indexValue, int dept) {
+        printAllEmployees().values().stream()
+                .filter(e -> e.getDepartment() == dept)
+                .forEach(e -> e.setSalary(Math.round(e.getSalary() + e.getSalary() * indexValue / 1000)));
+    }
+
+    @Override
+    public double avgSalaryForDepartment(int dept) {
+        return printAllEmployees().values().stream()
+                .filter(e -> e.getDepartment() == dept)
+                .mapToDouble(e -> e.getSalary())
+                .average().orElse(00);
+    }
+
+    @Override
     public Employee maxSalaryEmployeeInDept(int dept) {
         return printAllEmployees().values().stream()
                 .filter(e -> e.getDepartment() == dept)

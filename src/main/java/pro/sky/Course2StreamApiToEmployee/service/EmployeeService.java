@@ -10,6 +10,10 @@ public interface EmployeeService {
 
     Employee addEmployee(String firstName, String surName, String lastName, int department, double salary);
 
+    void indexSalaryesForDepartment(int indexValue, int department);
+
+    double avgSalaryForDepartment(int department);
+
     Employee removeEmployee(String firstName, String surName, String lastName);
 
     Employee findEmployee(String firstName, String surName, String lastName);
