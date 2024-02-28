@@ -1,14 +1,16 @@
 package pro.sky.Course2StreamApiToEmployee.service;
 
 import org.springframework.stereotype.Service;
+import pro.sky.Course2StreamApiToEmployee.exception.AddedEmloyeeInvalidDataException;
 import pro.sky.Course2StreamApiToEmployee.exception.EmployeeNotFoundException;
 import pro.sky.Course2StreamApiToEmployee.model.Employee;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.StringUtils.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -20,16 +22,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee addEmployee(String firstName, String surName, String lastName, int department, double salary) {
+        checkInputString(firstName, surName, lastName);
         return previousEmployeeService.addEmployee(firstName, surName, lastName, department, salary);
     }
 
     @Override
     public Employee removeEmployee(String firstName, String surName, String lastName) {
+        checkInputString(firstName, surName, lastName);
         return previousEmployeeService.removeEmployee(firstName, surName, lastName);
     }
 
     @Override
     public Employee findEmployee(String firstName, String surName, String lastName) {
+        checkInputString(firstName, surName, lastName);
         return previousEmployeeService.findEmployee(firstName, surName, lastName);
     }
 
@@ -79,5 +84,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         return printAllEmployees().values().stream()
                 .sorted(Comparator.comparingInt(e -> e.getDepartment()))
                 .collect(Collectors.toList());
+    }
+
+    private void checkInputString(String firstName, String surName, String lastName) {
+        if (!(isAlpha(firstName) && isAlpha(surName) && isAlpha(lastName))) {
+            throw new AddedEmloyeeInvalidDataException("Неверно заполнены данные сотрудника");
+        }
     }
 }

@@ -8,7 +8,6 @@ import pro.sky.Course2StreamApiToEmployee.model.Employee;
 import pro.sky.Course2StreamApiToEmployee.service.EmployeeService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/departments")
